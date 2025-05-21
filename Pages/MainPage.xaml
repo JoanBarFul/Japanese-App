@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:Japanese_App.PageModels"
+             xmlns:models="clr-namespace:Japanese_App.Models"
+             xmlns:controls="clr-namespace:Japanese_App.Pages.Controls"
+             xmlns:pullToRefresh="clr-namespace:Syncfusion.Maui.Toolkit.PullToRefresh;assembly=Syncfusion.Maui.Toolkit"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Japanese_App.Pages.MainPage"
+             x:DataType="pageModels:MainPageModel"
+             Title="Aprende Japones"
+             x:Name="PageRoot">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="NavigatedTo" Command="{Binding NavigatedToCommand}" />
+        <toolkit:EventToCommandBehavior EventName="NavigatedFrom" Command="{Binding NavigatedFromCommand}" />
+        <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding AppearingCommand}" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <pullToRefresh:SfPullToRefresh IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshCommand}">
+            <pullToRefresh:SfPullToRefresh.PullableContent>
+                <ScrollView>
+                    <VerticalStackLayout Spacing="20" Padding="20">
+
+                        <!-- Categoría de progreso o estadística -->
+                        <controls:CategoryChart />
+
+                        <!-- Botón Random Quiz encima de Actividades -->
+                        <Button 
+                            Text="Random Quiz"
+                            Command="{Binding RandomQuizCommand}"
+                            BackgroundColor="#4CAF50"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            WidthRequest="150"
+                            Margin="0,0,0,10"/>
+
+                        <!-- Actividades -->
+                        <Label Text="Actividades" Style="{StaticResource Title2}" Margin="0,10,0,5" />
+                        <VerticalStackLayout Spacing="15"
+                                             BindableLayout.ItemsSource="{Binding Actividades}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:Actividad">
+                                    <Frame BorderColor="LightGray" Margin="0,5" Padding="10">
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding nombre}" FontAttributes="Bold" />
+                                            <Label Text="{Binding descripcion}" FontSize="12" TextColor="Gray" />
+                                            <Label Text="{Binding Fecha, StringFormat='{}{0:dd/MM/yyyy}'}" FontSize="10" TextColor="DarkGray"/>
+
+                                            <VerticalStackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding BindingContext.ActividadTappedCommand, Source={x:Reference PageRoot}}"
+                                                    CommandParameter="{Binding .}" />
+                                            </VerticalStackLayout.GestureRecognizers>
+
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </pullToRefresh:SfPullToRefresh.PullableContent>
+        </pullToRefresh:SfPullToRefresh>
+
+        <!-- Botón para añadir actividad -->
+        <controls:AddButton 
+            IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+            Command="{Binding AddActividadCommand}" />
+    </Grid>
+</ContentPage>

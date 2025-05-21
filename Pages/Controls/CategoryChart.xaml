@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Border xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:chart="clr-namespace:Syncfusion.Maui.Toolkit.Charts;assembly=Syncfusion.Maui.Toolkit"
+        xmlns:controls="clr-namespace:Japanese_App.Pages.Controls" 
+        xmlns:shimmer="clr-namespace:Syncfusion.Maui.Toolkit.Shimmer;assembly=Syncfusion.Maui.Toolkit"
+        xmlns:pageModels="clr-namespace:Japanese_App.PageModels"
+        x:Class="Japanese_App.Pages.Controls.CategoryChart"
+        HeightRequest="{OnIdiom 300, Phone=200}"
+        Margin="0, 12"
+        Style="{StaticResource CardStyle}"
+        x:DataType="pageModels:MainPageModel">
+
+    <shimmer:SfShimmer
+        BackgroundColor="Transparent"
+        VerticalOptions="FillAndExpand"
+        IsActive="{Binding IsBusy}">
+
+        <shimmer:SfShimmer.CustomView>
+            <Grid>
+                <BoxView 
+                    CornerRadius="12"
+                    VerticalOptions="FillAndExpand"
+                    Style="{StaticResource ShimmerCustomViewStyle}"/>
+            </Grid>
+        </shimmer:SfShimmer.CustomView>
+
+        <shimmer:SfShimmer.Content>
+            <Grid RowDefinitions="Auto,*">
+                <Label 
+                    Text="Estadísticas Generales" 
+                    FontSize="24" 
+                    FontAttributes="Bold" 
+                    HorizontalOptions="Center"
+                    Margin="0,0,0,10" 
+                    Grid.Row="0" />
+
+                <chart:SfCircularChart 
+                    x:Name="Chart"
+                    Grid.Row="1"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand">
+                    <chart:RadialBarSeries 
+                        ItemsSource="{Binding TodoCategoryData}"
+                        PaletteBrushes="{Binding TodoCategoryColors}"
+                        XBindingPath="Title"
+                        YBindingPath="Count" 
+                        ShowDataLabels="True"
+                        EnableTooltip="True" 
+                        TrackFill="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}"
+                        CapStyle="BothCurve"/>
+                </chart:SfCircularChart>
+            </Grid>
+        </shimmer:SfShimmer.Content>
+    </shimmer:SfShimmer>
+</Border>

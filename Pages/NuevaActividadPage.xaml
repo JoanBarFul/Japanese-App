@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Japanese_App.Pages.NuevaActividadPage"
+    Title="Nueva Actividad">
+
+	<ScrollView>
+		<VerticalStackLayout Padding="20" Spacing="15">
+			<Entry Placeholder="Nombre" Text="{Binding Nombre}" />
+			<Editor Placeholder="Descripción" Text="{Binding Descripcion}" AutoSize="TextChanges" />
+			<DatePicker Date="{Binding Fecha}" />
+
+			<Button Text="Guardar Actividad"
+                    Command="{Binding GuardarCommand}"/>
+
+			<Button Text="Importar desde CSV"
+                    Clicked="OnImportCsvClicked" />
+		</VerticalStackLayout>
+	</ScrollView>
+</ContentPage>
+
